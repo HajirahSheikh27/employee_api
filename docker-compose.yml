@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: adminuser
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: hardb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: adminuser
+      DB_PASSWORD: adminpassword
+      DB_NAME: hardb
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
+
